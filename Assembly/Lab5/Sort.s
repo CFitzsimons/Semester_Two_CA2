@@ -102,13 +102,12 @@ loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 done_loop:                ; done inner loop, swap elements, swap a[i] with a[mi]
       ld r10,0(r1)        ; r10   = a[i]
       ld r11,0(r3)        ; r11   = a[mi]
-      sd r10,0(r3)        ; a[mi] = r10, which is old a[i]
-      sd r11,0(r1)        ; a[i]  = r11, which is old a[mi]
+      sd r11,0(r1)        
 
 next_main:                ; move on to the next iteration of the outer loop
       daddi r1,r1,8       ; r1 = r1 + 8, like i = i + 1
       bne r1,r2,main      ; loop back to the main loop unless i == N
-      nop                 ; branch delay slot
+      sd r10,0(r3)
 
 done:                     ; done
       halt                ; halt
