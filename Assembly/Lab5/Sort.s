@@ -68,11 +68,10 @@ a0:     .word 23      ; a[0]
 start:                    ; set up r1 (like i = 0)
       daddi r1,r0,a0      ; r1 = address of a[0]
 
-                          ; set up r2
-      daddi r2,r0,a0      ; r2 = address of a[0]
-      ld r8,N(r0)         ; r8 = N
-      dsll r8,r8,3        ; r8 = r8 * 8 (because there are 8 bytes per word)
-      dadd r2,r2,r8       ; r2 = r2 + r8, address of a[N]
+      daddi r2,r0,a0
+      ld r8,N(r0)         
+      dsll r8,r8,3
+      dadd r2,r2,r8
       daddi r2, r2, -8
 
 main:                     ; start of the outer loop
@@ -80,18 +79,13 @@ main:                     ; start of the outer loop
       daddi r4,r1,8       ; r4 = r1, like j = i+1
       ld r11,0(r3)
 loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
-      beq r4,r2,done_loop ; done if j == N                                             ;;
-      ld r10,0(r4)                 ; branch delay slot                                          ;;
-                                                                                       ;;
+      beq r4,r2,done_loop ; done if j == N 
+      daddi r13,r4, 0
       
-      
-                                                                                       ;;
-      daddi r13,r4,0      ; note (in r13) the current value of j                       ;;
-             ; like j = j + 1                                             ;;
-                                                                                       ;;
       slt r12,r10,r11     ; set r12 if a[j] < a[mi]; set r12 if found new minimum      ;;
+      daddi r4,r4,8
       beqz r12,loop       ; next iteration of inner loop unless found new minimum      ;;
-      daddi r4,r4,8                 
+      ld r10,0(r4)                
         
       
       daddi r3,r13,0      ; r3 = r13, like mi = j       
