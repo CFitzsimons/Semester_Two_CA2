@@ -81,23 +81,23 @@ main:                     ; start of the outer loop
       ld r11,0(r3)
 loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
       beq r4,r2,done_loop ; done if j == N                                             ;;
-      nop                 ; branch delay slot                                          ;;
+      ld r10,0(r4)                 ; branch delay slot                                          ;;
                                                                                        ;;
-      ld r10,0(r4)        ; r10 = a[j]                                                 ;;
+      
       
                                                                                        ;;
       daddi r13,r4,0      ; note (in r13) the current value of j                       ;;
-      daddi r4,r4,8       ; like j = j + 1                                             ;;
+             ; like j = j + 1                                             ;;
                                                                                        ;;
       slt r12,r10,r11     ; set r12 if a[j] < a[mi]; set r12 if found new minimum      ;;
       beqz r12,loop       ; next iteration of inner loop unless found new minimum      ;;
-      nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
+      daddi r4,r4,8                 
         
       
       daddi r3,r13,0      ; r3 = r13, like mi = j       
-      ld r11,0(r3)  
+       
       j loop              ; next iteration of inner loop                               ;;
-      nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
+      ld r11,0(r3)                  
 
 done_loop:                ; done inner loop, swap elements, swap a[i] with a[mi]
       ld r10,0(r1)        ; r10   = a[i]
