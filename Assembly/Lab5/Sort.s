@@ -70,8 +70,9 @@ start:                    ; set up r1 (like i = 0)
 
                           ; set up r2
       daddi r2,r0,a0      ; r2 = address of a[0]
-      dsll r2,r2,3        
-      daddi r2, r2, -8       ; r2 = r2 + r8, address of a[N]
+      ld r8,N(r0)         ; r8 = N
+      dsll r8,r8,3        ; r8 = r8 * 8 (because there are 8 bytes per word)
+      dadd r2,r2,r8       ; r2 = r2 + r8, address of a[N]
 
 main:                     ; start of the outer loop
       daddi r3,r1,0       ; r3 = r1 (position of minimum element), like mi = i
@@ -92,7 +93,6 @@ loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
       nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
         
       ld r11,0(r3)
-      
       daddi r3,r13,0      ; r3 = r13, like mi = j                                      ;;
       j loop              ; next iteration of inner loop                               ;;
       nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
