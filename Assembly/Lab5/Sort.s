@@ -77,13 +77,13 @@ start:                    ; set up r1 (like i = 0)
 main:                     ; start of the outer loop
       daddi r3,r1,0       ; r3 = r1 (position of minimum element), like mi = i
       daddi r4,r1,8       ; r4 = r1, like j = i+1
-
+      ld r11,0(r3)
 loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
       beq r4,r2,done_loop ; done if j == N                                             ;;
       nop                 ; branch delay slot                                          ;;
                                                                                        ;;
       ld r10,0(r4)        ; r10 = a[j]                                                 ;;
-      ld r11,0(r3);;                                                     ;;
+      
                                                                                        ;;
       daddi r13,r4,0      ; note (in r13) the current value of j                       ;;
       daddi r4,r4,8       ; like j = j + 1                                             ;;
@@ -93,7 +93,8 @@ loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
       nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
         
       
-      daddi r3,r13,0      ; r3 = r13, like mi = j                                      ;;
+      daddi r3,r13,0      ; r3 = r13, like mi = j       
+      ld r11,0(r3)
       j loop              ; next iteration of inner loop                               ;;
       nop                 ; branch delay slot ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
 
