@@ -66,41 +66,41 @@ a0:     .word 23      ; a[0]
       ; r4 is the address of the j-th element (like inner loop counter, address of a[j])
 
 start:                    ; set up r1 (like i = 0)
-      daddi r1,r0,a0      ; r1 = address of a[0]
-
-      daddi r2,r0,a0
-      ld r8,N(r0)         
+            ; r1 = address of a[0]
+      ld r8,N(r0)
+      daddi r1,r0,a0
+               
       dsll r8,r8,3
-      dadd r2,r2,r8
+      dadd r2,r1,r8
       daddi r2, r2, -8
 
-main:                     ; start of the outer loop
-      daddi r3,r1,0       ; r3 = r1 (position of minimum element), like mi = i
-      daddi r4,r1,8       ; r4 = r1, like j = i+1
-      ld r11,0(r3)
-loop:                     ; start of the inner loop ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ;;
-      beq r4,r2,done_loop ; done if j == N 
-      daddi r13,r4, 0
+main:                     ; start of the outer loop 
+      daddi r4,r1,8       
+      ld r11,0(r1)
       
-      slt r12,r10,r11     ; set r12 if a[j] < a[mi]; set r12 if found new minimum      ;;
-      daddi r4,r4,8
-      beqz r12,loop       ; next iteration of inner loop unless found new minimum      ;;
-      ld r10,0(r4)                
-        
-      
-      daddi r3,r13,0      ; r3 = r13, like mi = j       
+loop:
+      beq r4,r2,done_loop 
+      daddi r13,r4, 0 
        
-      j loop              ; next iteration of inner loop                               ;;
+      
+      slt r12,r10,r11    
+        daddi r4,r4,8
+     beqz r12,loop
+        ld r10,0(r4)
+      
+      daddi r3,r13,0           
+       
+      j loop
       ld r11,0(r3)                  
 
-done_loop:                ; done inner loop, swap elements, swap a[i] with a[mi]
-      ld r10,0(r1)        ; r10   = a[i]
-      ld r11,0(r3)        ; r11   = a[mi]
-      sd r11,0(r1)        
-
-next_main:                ; move on to the next iteration of the outer loop
-      daddi r1,r1,8       ; r1 = r1 + 8, like i = i + 1
-      bne r1,r2,main      ; loop back to the main loop unless i == N
+done_loop:               
+      daddi r1,r1,8
+      sd r11,-8(r1)        
+next_main:
+       
+        
+      ;ld r11,0(r3)
+      bne r1,r2,main
       sd r10,0(r3)
 
 done:                     ; done
