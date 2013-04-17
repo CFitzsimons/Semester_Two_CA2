@@ -23,7 +23,7 @@ class ServerThread extends Thread {
 	        true);
 
 	    // Send a message to the client
-	    socketOut.println("FUCK YOU, NOBODY LIKES YOU AND YOU'LL DIE ALONE.");
+	    socketOut.println("This is a message from the server.");
 
 	    // Close things
 	    socketOut.close();
